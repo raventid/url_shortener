@@ -1,15 +1,10 @@
-require 'forwardable'
-require_relative 'adapters/hiredis'
-require_relative 'adapters/no_storage'
-
+module Shortener
+	module Persistence
 class Storage
-
-  #include AutoInject["adapter"]
+  include Import["adapter"]
   extend Forwardable
 
-  def initialize(opts={})
-    @adapter = Persistence::Adapters::Hiredis.new  
-  end
-
-  def_delegators :@adapter, :get, :set
+  def_delegators :adapter, :get, :set
+end
+	end
 end

@@ -1,8 +1,9 @@
-#require_relative 'import'
-require_relative 'config'
-require_relative 'app'
+require 'eventmachine'
 
 EM.run do
+  require_relative 'dependencies'
+  require_relative 'app'
+
   server = 'thin'
   host = '0.0.0.0'
   port =  '4000'

@@ -1,37 +1,17 @@
-require "dry-container"
-require "dry-auto_inject"
-require_relative 'validations/validate'
-require_relative 'encode_or_save'
-require_relative '../../persistence/storage'
-require_relative '../../lib/algorithms/hashing/random_string'
-
-
-# Set up the container
-class MyContainer
-  extend Dry::Container::Mixin
-end
-# This time, register our objects without passing any dependencies
-#MyContainer.register "validate", -> { Validate.new }
-MyContainer.register "encode_or_save", -> { EncodeOrSave.new }
-MyContainer.register "create", -> { Create.new }
-MyContainer.register "storage", -> { Storage.new }
-MyContainer.register "algorithm", -> { RandomString.new }
-
-
-# Set up an AutoInject to use our container
-AutoInject = Dry::AutoInject(MyContainer)
-
-#require 'import'
-
+module Shortener
+	module Operation
 class Create
-  include AutoInject["validate", "encode_or_save"]
-  #include Import["validate"]
+  include Import["validate", "encode_or_save"]
 
   def call(url)
-    if validate.(url)
-      { url: encode_or_save.(url) }
+    validated = validate.(url)
+
+    if validated[:error] 
+      { error: validated[:error] }
     else
-      { error: "Parameter 'longUrl' is empty" } # is it really you?
+      { url: encode_or_save.(url) }
     end
   end
+end
+	end
 end

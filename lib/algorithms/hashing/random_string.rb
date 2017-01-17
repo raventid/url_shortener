@@ -1,3 +1,5 @@
+module Shortener
+	module Algorithm
 class RandomString
   POSSIBILITIES = 99999999
   LENGTH = 36 
@@ -7,4 +9,6 @@ class RandomString
   end
 
   def decode(_val); end
+end
+	end
 end

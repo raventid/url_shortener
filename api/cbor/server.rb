@@ -1,8 +1,7 @@
 require 'socket'
 require 'cbor'
 
-module API
-  module HTTP
+  module Shortener
     class Server
       server = TCPServer.new 2000
       loop do
@@ -16,4 +15,3 @@ module API
       end
     end
   end
-end

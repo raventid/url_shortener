@@ -1,3 +1,5 @@
+module Shortener
+	module Algorithm
 class Bijectve 
   # Simple bijective function
   #   Basically encodes any integer into a base(n) string,
@@ -27,4 +29,6 @@ class Bijectve
     s.each_char { |c| i = i * base + ALPHABET.index(c) }
     i
   end
+end
+	end
 end

@@ -1,6 +1,6 @@
 class App < Sinatra::Base
 
-  include AutoInject["storage", "create", "redirect", "validate"]
+  include Import["adapter", "storage", "create", "read", "validate"]
 
   register Sinatra::Async
 
