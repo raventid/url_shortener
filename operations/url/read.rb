@@ -1,11 +1,11 @@
 module Shortener
-	module Operation
-class Read
-  include Import["decode_or_load"]
+  module Operation
+    class Read
+      include Import["decode_or_load"]
 
-  def call(code)
-    load_or_decode_url.(code)
+      def call(code)
+        decode_or_load.(code)
+      end
+    end
   end
-end
-	end
 end

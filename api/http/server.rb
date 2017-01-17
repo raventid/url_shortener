@@ -4,9 +4,15 @@ EM.run do
   require_relative 'dependencies'
   require_relative 'app'
 
-  server = 'thin'
-  host = '0.0.0.0'
-  port =  '4000'
+  DEFAULT = {
+    server: 'thin',
+    host: '0.0.0.0',
+    port: '4000',
+  }
+
+  server = DEFAULT[:server] 
+  host = DEFAULT[:host] 
+  port = DEFAULT[:port] 
   app = App.new
 
   dispatch = Rack::Builder.app do

@@ -1,6 +1,5 @@
 class App < Sinatra::Base
-
-  include Import["adapter", "storage", "create", "read", "validate"]
+  include Import["storage", "create"] 
 
   register Sinatra::Async
 
@@ -8,26 +7,20 @@ class App < Sinatra::Base
     set :threaded, false
   end
 
-  def redis
-    @redis ||= EM::Hiredis.connect
-  end
-
   post '/' do
     content_type 'application/json'
     create.(get_url).to_json
   end
 
-  aget '/:link' do
-    redis.get(params[:link]) do |full_url|
-      body "Unknown short link #{params[:link]}" unless validate.(full_url) 
-      body "Got it #{full_url}" if full_url
+  aget '/:code' do
+    storage.get(params[:code]) do |full_url|
+      if full_url
+        body "Found #{full_url}"
+      else
+        body "Not found #{full_url}"
+      end
       async_schedule { redirect to(full_url), 301 }
     end
-  end
-
-  #place some data to redis for test, remove it from here
-  def place_test_data
-    redis.set 'foo', 'bar'
   end
 
   private
@@ -38,7 +31,7 @@ class App < Sinatra::Base
   end
 
   def parse_json
-    request.body.rewind  # in case someone already read it
+    request.body.rewind 
     JSON.parse(request.body.read)
   end
 end
